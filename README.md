@@ -77,6 +77,14 @@ Ejecuta el tinker de Eloquent, que permite ejecutar comandos o scripts desde ter
  Y guardar sus registros en la base de datos con el metodo save()  "$curso->save();"
  Llenaría los datos de created_at y updated_at en la base d datos
 
+ # Seeders
+ En esta version se borró las migraciones de edicion de bases de datos y ademas se resetearon los datos de las tablas y se agregó una columna en la tabla cursos, categoria.
+
+- Para hacer uso los Seeders o semillas podemos instanciar un modelo dentro del archivo DatabaseSeeders.php con use (App\Models\NombreModel) y luego, dentro del metodo run() de la clase DatabaseSeeder en éste archivo agregamos una variable  que instancíe al modelo que vamos a usar y despues le generaríamos la data que queremos que guarde para al final pasarle el metodo save() a la variable y que se guarde en la BD
+- Otra forma es usar el comando php artisan make:seeder NombreSeeder 
+De éste modo en un archivo aparte separamos por Uso de model(llamar al modelo con use) y cantidad de seeders(la instancia de modelo, descripcion de campos y save() por cada registro);esto anterios para cada nuevo archivo Seeder. Para esto en el archivo main de Seeders _(DatabaseSeeder.php)_ dentro de su metodo run() llamamos al seeder hijo de la tabla que vamos a inyectar de info ej. 
+$this->call(CursoSeeder::class);
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
