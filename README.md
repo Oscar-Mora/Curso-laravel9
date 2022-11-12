@@ -10,7 +10,7 @@ Al crear plantillas blade, véase carpeta /resources/views/layouts. En ocasiones
 
 Creo que lo más importante aquí es que se revise el archivo database.php en la carpeta config de la carpeta root junto con el archivo .env o .env.example en caso de estar bajando el repositorio despues de haber sido creado
 
-### Migraciones
+## Migraciones
 Son como el control de versiones dentro de las bases de datoslo que permitre al equipo modificar y compartir el esquema de la base de datos de la aplicacion.Cada modificacion que querramos hacer en la DB van a quedar como un registro en las migraciones y todos esos registros van a estar al alcance de mis compañeros de equipo en el pryecto
 - Si vamos a la carpeta database dentro de ella vemos una carpeta llamada migrations
 por defecto tenemos 3 migraciones
@@ -46,7 +46,7 @@ Vemos como se crea  un metodo de la clase schema dopIfExist('users') pasando com
 
 3. ya que especificamos las modificaciones en los metodos up() y down() de la migracion corremos la migracion con **_php artisan migrate_**
 
-4. **¿Y que hago su me equivoque en algo de lo que especifiqué?**
+4. **¿Y que hago si me equivoque en algo de lo que especifiqué?**
 Es tan sencillo como hacer **_php artisan migrate:rollback;_** (regresa la ultima migracion hecha). 
 Generas las modificaciones de correccion y enseguida vuelves a correr **_php artisan migrate_** 
 
@@ -76,6 +76,15 @@ Ejecuta el tinker de Eloquent, que permite ejecutar comandos o scripts desde ter
  $curso -> description = 'El mejor framework de php';
  Y guardar sus registros en la base de datos con el metodo save()  "$curso->save();"
  Llenaría los datos de created_at y updated_at en la base d datos
+
+ # Seeders
+ En esta version se borró las migraciones de edicion de bases de datos y ademas se resetearon los datos de las tablas y se agregó una columna en la tabla cursos, categoria.
+
+- Para hacer uso los Seeders o semillas podemos instanciar un modelo dentro del archivo DatabaseSeeders.php con use (App\Models\NombreModel) y luego, dentro del metodo run() de la clase DatabaseSeeder de éste archivo agregamos una $variable  que instancíe al modelo que vamos a usar(new Curso) y despues le generaríamos la data que queremos que guarde para al final pasarle el metodo save() a la variable y que se guarde en la BD por cada campo ej.($curso->name='laravel'...etc)  y luego $curso->save();.Ésta sería la forma más manual de hacer la inserción de semillas
+
+- Otra forma es usar el comando php artisan make:seeder NombreSeeder 
+De éste modo en un archivo aparte separamos por tipo de Use model(llamar al modelo con use) y cantidad de seeders(la instancia de modelo, descripcion de campos y save() por cada registro);esto anterior para cada nuevo archivo Seeder. Para esto en el archivo main de Seeders _(DatabaseSeeder.php)_ dentro de su metodo run() llamamos al seeder hijo de la tabla que vamos a inyectar de info ej. 
+$this->call(CursoSeeder::class);
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

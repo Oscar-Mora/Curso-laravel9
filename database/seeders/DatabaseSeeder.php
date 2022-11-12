@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +22,13 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        //Inyectar manualmente seeders:
+        // $curso = new Curso;
+        // $curso->name='laravel';
+        // $curso->description='Mejor framework de PHP';
+        // $curso->save();
+
+        $this->call(CursoSeeder::class); // se corre "php artisan migrate:fresh --seed"
     }
 }
