@@ -91,6 +91,15 @@ Para trabajar con Factories podemos hacer el commando sail php artisan make:fact
 Haciendo referencia en el flag --model=Model al modelo que se usará de referencia, osea la create_model_table.php del modelo para poder simplemente llamar al modelo desde DatabaseSeeder.php con Curso::factory(50)->create();
 y despues en el modelo  declarar que hace uso de un factory con use Illuminate\Database\Eloquent\Factories\HasFactory; y con  use HasFactory;
 
+# SINTAXIS FUNCIONES FLECHA, implementadas desde php7.4 https://www.php.net/manual/es/functions.arrow.php
+
+# MUTADORES Y ACCESORES  (SETTERS Y GETTERS)
+Para hacer un mutador y un accesor debemos identificar el Model que queremos preparar para tenga mutadores y accesores
+Así que tenemos que importar en la parte de arriba una "definicion" llamada "Attribute", (use Illuminate\Database\Eloquent\Casts\Attribute;) y tenemos que agregar despues dentro de la class User generamos un metodo protected con el nombre del atributo del modelo.
+Y dentro del modelo pediremos que nos retorne una nueva instancia del Attribute osea:
+>  protected function name():Attribute{return new Attribute()} 
+y dentro del los parentesis del new Attribute se colocarán el mutador , (set) y el accesor(get).
+ver ejemplo de model User, los mutadores y accesores fueron definidos con forma funcion flecha y primero(lo que está comentado) mediante funcion anónima.
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
