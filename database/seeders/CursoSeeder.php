@@ -15,11 +15,11 @@ class CursoSeeder extends Seeder
      */
     public function run()
     {
-        //inyectando por "php artisan make:seeder ...Curso", en DatabaseSeeders.php llamo a ésta clase
-        $curso = new Curso;
-        $curso->name='laravel';
-        $curso->description='Mejor framework de PHP';
+        $curso = new Curso();
+        $curso ->name='Laravel';
+        $curso ->description='El mejor framework de PHP';
+        $curso ->category='Desarrollor web';
+
         $curso->save();
-        
     }
 }
