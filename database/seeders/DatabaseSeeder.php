@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\Curso;
 
 
 
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
@@ -29,6 +30,10 @@ class DatabaseSeeder extends Seeder
         // $curso->description='Mejor framework de PHP';
         // $curso->save();
 
-        $this->call(CursoSeeder::class); // se corre "php artisan migrate:fresh --seed"
+        //inyectando por ModelSeeder.php
+        // $this->call(CursoSeeder::class); // llama CursoSeeder al correr "php artisan migrate:fresh --seed"
+
+        //Inyeccion directa desde aquí al model y del model al factory
+        Curso::factory(50)->create();
     }
 }

@@ -86,6 +86,12 @@ Ejecuta el tinker de Eloquent, que permite ejecutar comandos o scripts desde ter
 De éste modo en un archivo aparte separamos por tipo de Use model(llamar al modelo con use) y cantidad de seeders(la instancia de modelo, descripcion de campos y save() por cada registro);esto anterior para cada nuevo archivo Seeder. Para esto en el archivo main de Seeders _(DatabaseSeeder.php)_ dentro de su metodo run() llamamos al seeder hijo de la tabla que vamos a inyectar de info ej. 
 $this->call(CursoSeeder::class);
 
+# Factory
+Para trabajar con Factories podemos hacer el commando sail php artisan make:factory CursoFactory --model=Curso
+Haciendo referencia en el flag --model=Model al modelo que se usará de referencia, osea la create_model_table.php del modelo para poder simplemente llamar al modelo desde DatabaseSeeder.php con Curso::factory(50)->create();
+y despues en el modelo  declarar que hace uso de un factory con use Illuminate\Database\Eloquent\Factories\HasFactory; y con  use HasFactory;
+
+
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

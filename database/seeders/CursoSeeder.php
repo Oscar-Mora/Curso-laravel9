@@ -14,12 +14,15 @@ class CursoSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        $curso = new Curso();
-        $curso ->name='Laravel';
-        $curso ->description='El mejor framework de PHP';
-        $curso ->category='Desarrollor web';
-
-        $curso->save();
+    {   
+        // Inyeccion manual desde el seeder personalizado
+        // $curso = new Curso();
+        // $curso ->name='Laravel';
+        // $curso ->description='El mejor framework de PHP';
+        // $curso ->category='Desarrollor web';
+        // $curso->save();
+        
+        //Si estuvieramos trabajando desde aquí la inyeccion de data a las tablas, DatabaseSeeder llama a CursoSeeder
+        // Curso::factory(50)->create();
     }
 }
