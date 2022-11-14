@@ -27,9 +27,16 @@ Route::get('/',HomeController::class);
  *   |3.- Las rutas tienen estructura de Route::_verbo_('/ruta','metodo')
 * */
 Route::controller(CursoController::class)->group(function(){
-    Route::get('cursos','index');
-    Route::get('cursos/create','create');
-    Route::get('cursos/{curso}','show');
+  /**-----------------Asignacion de NOMBRE DE RUTA-------------------------------------------------*
+   * Ayuda a hacer referencia a RUTAS desde las vistas con ("->name('nombreAsignado')")en el archivo de rutas y con {{route('route.nameAssigned')}} en el archivo de la vista
+   * Laravel recomienda que se de un nombre indetificativo a cada una de las rutas permite seguir dirigiendo a la misma ruta establecida aunque la nomenclatura de la ruta cambie
+   * Ejemplo si 'cursos/create' cambia a 'courses/create' su nombre de ruta identificativa es 'cursos.create', así que
+   * Aunque cambie el nombre de la RUTA  el nombre de la ruta-asignada seguira identificando a donde ir y que hacer.
+   * --------------------------------------------------------------------------------------------
+*/
+    Route::get('cursos','index')->name('cursos.index');
+    Route::get('cursos/create','create')->name('cursos.create');
+    Route::get('cursos/{id}','show')->name('cursos.show');
 });
 
 

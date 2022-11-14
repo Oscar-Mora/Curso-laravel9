@@ -75,7 +75,7 @@ Ejecuta el tinker de Eloquent, que permite ejecutar comandos o scripts desde ter
  y despues asignar valores a sus propiedades $curso->name='Laravel';
  $curso -> description = 'El mejor framework de php';
  Y guardar sus registros en la base de datos con el metodo save()  "$curso->save();"
- Llenaría los datos de created_at y updated_at en la base d datos
+ Llenaría los datos de created_at y updated_at en la base d datos.
 
  # Seeders
  En esta version se borró las migraciones de edicion de bases de datos y ademas se resetearon los datos de las tablas y se agregó una columna en la tabla cursos, categoria.
@@ -86,12 +86,12 @@ Ejecuta el tinker de Eloquent, que permite ejecutar comandos o scripts desde ter
 De éste modo en un archivo aparte separamos por tipo de Use model(llamar al modelo con use) y cantidad de seeders(la instancia de modelo, descripcion de campos y save() por cada registro);esto anterior para cada nuevo archivo Seeder. Para esto en el archivo main de Seeders _(DatabaseSeeder.php)_ dentro de su metodo run() llamamos al seeder hijo de la tabla que vamos a inyectar de info ej. 
 $this->call(CursoSeeder::class);
 
-# Factory
+# Factory 
 Para trabajar con Factories podemos hacer el commando sail php artisan make:factory CursoFactory --model=Curso
 Haciendo referencia en el flag --model=Model al modelo que se usará de referencia, osea la create_model_table.php del modelo para poder simplemente llamar al modelo desde DatabaseSeeder.php con Curso::factory(50)->create();
 y despues en el modelo  declarar que hace uso de un factory con use Illuminate\Database\Eloquent\Factories\HasFactory; y con  use HasFactory;
 
-# SINTAXIS FUNCIONES FLECHA, implementadas desde php7.4 https://www.php.net/manual/es/functions.arrow.php
+# SINTAXIS FUNCIONES FLECHA, implementadas desde [php7.4](https://www.php.net/manual/es/functions.arrow.php)
 
 # MUTADORES Y ACCESORES  (SETTERS Y GETTERS)
 Para hacer un mutador y un accesor debemos identificar el Model que queremos preparar para tenga mutadores y accesores
@@ -100,6 +100,21 @@ Y dentro del modelo pediremos que nos retorne una nueva instancia del Attribute 
 >  protected function name():Attribute{return new Attribute()} 
 y dentro del los parentesis del new Attribute se colocarán el mutador , (set) y el accesor(get).
 ver ejemplo de model User, los mutadores y accesores fueron definidos con forma funcion flecha y primero(lo que está comentado) mediante funcion anónima.
+
+# GENERANDO EL CRUD
+
+Para la Generacion del CRUD Iniciamos con "ASIGNACION DEL NOMBRE DE RUTA" desde web.php ver comentario NOMBRE DE RUTA 
+Generamos primero Index, que devuelve:
+1. Renderizado del listado de registros existentes en base de datos
+2. Renderiza la paginación de los registros en la base de datos
+3. Renderiza botón de Crear Registro
+4. Enlace para renderizar cada uno de los registros
+- Así que en el metodo index() del Controller podemos generar una $variable que cache del modelo todos los registros --> Model::all();<-- y en la vista correspondiente a la que apunta la ruta de web.php podemos poner en una @seccion de blade lo siguiente (<ul>@foreach($cursos as $curso) <li>{curso->name} </li> @endforeach</ul>)para mostrar la prop nombre,
+- Para hacer bien la paginacion deberíamos agregar los botones despues del listado  cambiando en el controller al cachar los datos de la BD Model::paginate(); que devuelve por páginas todos los registros y en la vista, con el siguiente codigo {{$cursos->links()}} laravel nos ayuda a hacer el diseño de las paginaciones
+- La siguiente tarea es generar el boton de crear curso con un <a href="{{route('route.nameAssigned')}}"></a> al inicio de la vista, que debería llevar la ruta de nombre asinado 'curso.create'
+- Por último  se debe generar el enlace que debe ir en cada registro para que al dar click nos lleve a visualizar la data de cada registro.
+
+
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
