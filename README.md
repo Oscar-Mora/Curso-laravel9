@@ -102,6 +102,7 @@ y dentro del los parentesis del new Attribute se colocarán el mutador , (set) y
 ver ejemplo de model User, los mutadores y accesores fueron definidos con forma funcion flecha y primero(lo que está comentado) mediante funcion anónima.
 
 # GENERANDO EL CRUD
+## Crear listado y mostrar un registro
 
 Para la Generacion del CRUD Iniciamos con "ASIGNACION DEL NOMBRE DE RUTA" desde web.php ver comentario NOMBRE DE RUTA 
 Generamos primero Index, que devuelve:
@@ -109,22 +110,40 @@ Generamos primero Index, que devuelve:
 2. Renderiza la paginación de los registros en la base de datos
 3. Renderiza botón de Crear Registro
 4. Enlace para renderizar cada uno de los registros
-- Así que en el metodo index() del Controller podemos generar una $variable que cache del modelo todos los registros --> Model::all();<-- y en la vista correspondiente a la que apunta la ruta de web.php podemos poner en una @seccion de blade lo siguiente (<ul>@foreach($cursos as $curso) <li>{curso->name} </li> @endforeach</ul>)para mostrar la prop nombre,
-- Para hacer bien la paginacion deberíamos agregar los botones despues del listado  cambiando en el controller al cachar los datos de la BD Model::paginate(); que devuelve por páginas todos los registros y en la vista, con el siguiente codigo {{$cursos->links()}} laravel nos ayuda a hacer el diseño de las paginaciones
-- La siguiente tarea es generar el boton de crear curso con un <a href="{{route('route.nameAssigned')}}"></a> al inicio de la vista, que debería llevar la ruta de nombre asinado 'curso.create'
-- Por último  se debe generar el enlace que debe ir en cada registro para que al dar click nos lleve a visualizar la data de cada registro.
+- Así que en el metodo index() del Controller podemos generar una $variable que cache del modelo todos los registros --> Model::all();<-- y en la vista correspondiente a la que apunta la ruta de web.php podemos poner en una @seccion de blade lo siguiente _<ul>@foreach($cursos as $curso) <li>{curso->name} </li> @endforeach</ul>_ para mostrar la prop nombre,
+- Para hacer bien la paginacion deberíamos agregar los botones despues del listado  cambiando en el controller al cachar los datos de la BD _Model::paginate();_ que devuelve por páginas todos los registros y en la vista, con el siguiente codigo _{{$cursos->links()}}_ laravel nos ayuda a hacer el diseño de las paginaciones
+- La siguiente tarea es generar el boton de crear curso con un _<a href="{{route('route.nameAssigned')}}"></a>_ al inicio de la vista, que debería llevar la ruta de nombre asinado 'curso.create'
+- Por último  se debe generar el enlace que debe ir en cada registro para que al dar click nos lleve a visualizar la data de cada registro._<a href="{{route('cursos.show',$curso->id)}}">{{$curso->name}}</a>_ que debe llevar la ruta y el argumentopara mandar al back
+
+## Crear y actualizar registros
+El siguiente paso es modificar el template de create.blade.php agregando el Form con su action(la ruta que se invoca) y method(el m http que se usa) _<form action="{{route('cursos.store')}}" method = "POST">_ Y con sus inputs y sus atributo name='nombreCampoEnBD' para poder guardar esa informacion en la bd.
+Luego se generan las rutas post en el archivo web.php _Route::post('cursos/',[CursoController::class,'store'])->name('cursos.store');_ que definen el metodo http, la ruta que devuelve y el metodo que hara la lógica con la informacion que se esté tratando.Y luego se hace la lógica en los metodos del controllador(store y update edit)
+ ### Metodo store
+ Para recibir en un metodo del controller lo que se envía por formularios del frontend se necesita pasar como parametro un objeto de tipo Request con nombre $request, al hacer esto cualquier cosa que se envíe por el formulario  va a estar almacenado en éste objeto y podemos probarlo pidiendo que devuelva todo su contenido con return $request->all();
+ Entonces ya que confirmé que recibo datos, instancío el modelo de la bd donde quiero guardar la información _$curso = new Curso();_  y despues mapeo cada dato pasandolo al backend, ejemplo: _$curso->name = $request->name;_ y así por cada campo. Luego de mapear puedo testear la data con _return $curso;_ o _dd($curso);_
+ Después ya que verifiqué que tengo el resultado que quiero puedo guardar ahora si la info en BD con _$curso->save();_
+ Y por último se pide al controllador que despues de guardar nos redireccione a la vista principal o a la vista del nuevo registro con el metodo redirect();
+ _return redirect()->route('cursos.show',$curso);_
+ ## Metodo Actualizar
+ Tenemos que crear ahora un botón dentro del registro que estémos visualizando y que nos permita editar el registro. Es muy Importante! el mandar parametros cuando se requiera, en este caso los pasos a seguir son:
+ - Generar la ruta en web.php _Route::get('cursos/{id}/edit','edit')->name('cursos.edit');_ _Route::get_ hace referencia a ruta, metodo del controlador y su nombre asignado que usaremos en la vista.
+ - Generamos el metodo en el controller, el cual recibe un parametro que se estableció en la ruta de _web.php_ **_{$id}_** con _public function edit($id){ ..codigo}_
+ - Generamos la referencia a la ruta de la vista de modificacion del registro, en la vista donde queremos generar la funcionalidad, ya sea en el listado principal o en la vista del mismo registro.Mediante un botón o enlace <a> con su _href="{{route('cursos.edit',$curso->id)}}">_ mandando el parametro y la ruta a buscar.
+- Despues generamos la lógica de lo que haremos en el controlador. Si en los parametros de la funcion de edit le pasamos por ejemplo un objeto de tipo Curso hacemos referencia al modelo,y llamado $id o $curso como quedó en el ejemplo ya podríamos hacer uso de la data que estamos trayendo del front y mandarla a la vista donde modificaremos el registro _return view('cursos.edit', compact('curso'));_  
+# Actualizacion de Datos
+- Generamos ahora la vista de actualizacion de datos,como un Forms que mapee la info de la variable que recibe(ver punto anterior). ahi los atributos del form serían:
+ _action="{{route('cursos.udpate')}}" method = "POST">_ y se le pasa una directiva de blade para cambiar el metodo pues es PUT con @methods('put')
+- Ahora generamos la ruta en web.php  _Route::put('cursos/{curso}',[CursoController::class,'update'])->name('cursos.update');_
+- Despues hacemos el metodo en Controller, rescatando lo que esta mandando por la url con un objeto Request llamado $request y un objeto tipo Curso llamado $curso pra que lo que obtengo del usuario en el formulario lo meta en el $curso  y al final guardamos con ->save();
+- Finalmente  hacemos un redirect para ir al registro de nuevo pero actualizado con lo que nos dió el user.
+
 
 
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+
 
 ## About Laravel
 
@@ -139,48 +158,4 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 

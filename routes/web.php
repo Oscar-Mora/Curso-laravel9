@@ -24,22 +24,26 @@ Route::get('/',HomeController::class);
  *   |2.- Se define la "Route", 
  *   |se define el controlador en común ::controller(CursoController:.class), 
  *   |se define que sea un grupo en una f anonima ->group(function()){ RUTAS }
- *   |3.- Las rutas tienen estructura de Route::_verbo_('/ruta','metodo')
+ *   |3.- Las rutas tienen estructura de Route::_verboHttp_('/ruta','metodo')
 * */
 Route::controller(CursoController::class)->group(function(){
   /**-----------------Asignacion de NOMBRE DE RUTA-------------------------------------------------*
-   * Ayuda a hacer referencia a RUTAS desde las vistas con ("->name('nombreAsignado')")en el archivo de rutas y con {{route('route.nameAssigned')}} en el archivo de la vista
-   * Laravel recomienda que se de un nombre indetificativo a cada una de las rutas permite seguir dirigiendo a la misma ruta establecida aunque la nomenclatura de la ruta cambie
-   * Ejemplo si 'cursos/create' cambia a 'courses/create' su nombre de ruta identificativa es 'cursos.create', así que
+   * Ayuda a hacer referencia desde las vistas  a las RUTAS con ("->name('nombreAsignado')")en el archivo de rutas y con {{route('route.nameAssigned')}} en el archivo de la vista
+   * Laravel recomienda que se de un nombre indetificativo a cada una de las rutas, permite seguir dirigiendo a la misma ruta establecida aunque la nomenclatura de la ruta cambie
+   * Ejemplo si 'cursos/create' cambia a 'courses/create' y su nombre de ruta identificativa es 'cursos.create', así
    * Aunque cambie el nombre de la RUTA  el nombre de la ruta-asignada seguira identificando a donde ir y que hacer.
    * --------------------------------------------------------------------------------------------
 */
     Route::get('cursos','index')->name('cursos.index');
     Route::get('cursos/create','create')->name('cursos.create');
-    Route::get('cursos/{id}','show')->name('cursos.show');
+    Route::get('cursos/{curso}','show')->name('cursos.show');
+    Route::get('cursos/{curso}/edit','edit')->name('cursos.edit');
 });
 
+//Rutas para modificar lo que hay en BD
 
+Route::post('cursos/',[CursoController::class,'store'])->name('cursos.store');
+Route::put('cursos/{curso}',[CursoController::class,'update'])->name('cursos.update');
 
 
 
