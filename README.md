@@ -136,26 +136,20 @@ Luego se generan las rutas post en el archivo web.php _Route::post('cursos/',[Cu
 - Ahora generamos la ruta en web.php  _Route::put('cursos/{curso}',[CursoController::class,'update'])->name('cursos.update');_
 - Despues hacemos el metodo en Controller, rescatando lo que esta mandando por la url con un objeto Request llamado $request y un objeto tipo Curso llamado $curso pra que lo que obtengo del usuario en el formulario lo meta en el $curso  y al final guardamos con ->save();
 - Finalmente  hacemos un redirect para ir al registro de nuevo pero actualizado con lo que nos dió el user.
+# Validaciones
+1. el metodo que se usa se llama validate(); y se pone con  los campos=>required, para que no permita avanzar si esos campos no estan fulfilled.
+2. ir a la vista y poner la directiva @error de blade ver create.blade.php
+ profundizar más con: 
+ - [tutorial-1](https://www.youtube.com/watch?v=KbpbqZshUus&list=PLZ2ovOgdI-kWWS9aq8mfUDkJRfYib-SvF&index=21)
+ - [tutorial-2](https://www.youtube.com/watch?v=Ze-Sg2BT3mc&list=PLZ2ovOgdI-kWWS9aq8mfUDkJRfYib-SvF&index=22)
 
 
+# Asignacion Masiva de Store
+Aquí hablamos sobre las formas de asignar valores recibidos en fronted en los formularios a campos en la BD
+1. Primer Forma: Asignacion masiva
+$curso = Curso::create($request->all());
+ Aquí se crea un nuevo objeto desde lo que recibimos del front en $request, pero necesita que se cree una propiedad fillable() en el Model por cada campo, para que permita rellenar un registro por asignacion masiva solo de lo que establecimos en la propiedad $fillable, ver class del Curso.php en /Models
+ con la propiedad $ guarded=['nombre del campo'] podemos resguardar los campos que de plano no podrán sobreescribir o escribir los usuarios, y así estaŕa más limpio el modelo para lo de asignacion masiva
+# Asignacion Masiva de Update
 
-
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
+2. $curso-> update($request->all()); justo hace lo mismo que el metodo create();

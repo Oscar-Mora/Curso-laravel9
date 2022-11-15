@@ -27,12 +27,20 @@ class CursoController extends Controller
     }
     public function store(Request $request){
         //testeo el $request así: return $request->all(); / incluye toda la data enviada y el token de @csrf
-        
+        //validacion
+        $request->validate([
+            'name'        => 'required',
+            'description' => 'required',
+            'category' => 'required'
+        ]);
         $curso = new Curso();//instancío
-        //mapeo
-        $curso->name = $request->name;
-        $curso->description = $request->description;
-        $curso->category = $request->category;
+        // //mapeo-asignacion manual
+        // $curso->name = $request->name;
+        // $curso->description = $request->description;
+        // $curso->category = $request->category;
+    
+        //asignacion masiva
+        $curso = Curso::create($request->all());
 
         //return $curso; //testeo que me devuelva la data mapeada 
         $curso->save();//guardo
@@ -67,6 +75,12 @@ class CursoController extends Controller
     public function update(Request $request, Curso $curso)
     {
         //testeo //return $curso;// deberia devoler el objeto al dar click en actualizar
+        //validacion
+        $request->validate([
+            'name'        => 'required|max:10',
+            'description' => 'required|min:10',
+            'category' => 'required'
+        ]);
         $curso->name = $request->name;
         $curso->description = $request->description;
         $curso->category = $request->category;
