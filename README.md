@@ -153,3 +153,9 @@ $curso = Curso::create($request->all());
 # Asignacion Masiva de Update
 
 2. $curso-> update($request->all()); justo hace lo mismo que el metodo create();
+# Borrar un registro
+1. Creamos la ruta primero, 
+2. Creamos el metodo en controller
+3. Asignamos en el front la funcionalidad a traves de un formulario que genere un token porque necesitamos ser autorized para modificar la DB, y como en la creacion de update,  ya que solo se puede hacer get y post hacemos la directiva de blade, @method('delete') pero usamos delete ahora y en action mandamos al controlador con la ruta que se estableció en web.php
+
+Me salté las clases [22](https://www.youtube.com/watch?v=PT6BoDQdkXk&list=PLZ2ovOgdI-kWWS9aq8mfUDkJRfYib-SvF&index=24) y [23](https://www.youtube.com/watch?v=VYuthGIhrS0&list=PLZ2ovOgdI-kWWS9aq8mfUDkJRfYib-SvF&index=25)

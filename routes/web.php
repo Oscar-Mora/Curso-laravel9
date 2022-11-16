@@ -17,7 +17,7 @@ use App\Http\Controllers\CursoController;
  *  | ENTONCES, SE DECLARA la Clase como un array.  
  *  | El array contiene, la "Class" y el "Método" dentro de la "Class" que se está llamando ver:  Route::get('cursos',[CursoController::class,'index']);  se hace lo mismo para cada metodo que necesitemos del controller
  * */
-Route::get('/',HomeController::class);
+Route::get('/',HomeController::class)->name('Home');
  
 /**  Generar un grupo de rutas.?
  *   |1.- se hace el use App\Http\Controllers\CursoController;
@@ -44,7 +44,9 @@ Route::controller(CursoController::class)->group(function(){
 
 Route::post('cursos/',[CursoController::class,'store'])->name('cursos.store');
 Route::put('cursos/{curso}',[CursoController::class,'update'])->name('cursos.update');
+Route::delete('cursos/{curso}',[CursoController::class,'destroy'])->name('cursos.destroy');
 
+Route::view('nosotros','cursos.nosotros')->name('nosotros');
 
 
 

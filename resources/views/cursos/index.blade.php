@@ -5,7 +5,7 @@
 @section('content')   
 
 <h1>'Bienvenido a la página de cursos'</h1>
-<a href="{{route('cursos.create')}}">Crear Curso</a>
+<a href="{{route('cursos.create')}}" class="crear">Crear Curso</a>
     <ul>
         @foreach ($cursos as $curso)
         
@@ -13,7 +13,7 @@
             <li>
         <!--Para pasar parametros a una route() que pide argumentos, se asigna como 2do argumento en los parentesis como a continuación,
         que dice que del item($curso->id) encuentre el id y en la  lo devuelva-->
-                <a href="{{route('cursos.show',$curso->id)}}">{{$curso->name}}</a>
+                <a class="listado" href="{{route('cursos.show',$curso->id)}}">{{$curso->name}}</a>
             </li>
         @endforeach
     </ul>

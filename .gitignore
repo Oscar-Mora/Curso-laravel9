@@ -16,3 +16,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/nova
+Nova/
+public/vendor/
+lang/vendor/
+config/nova.php
+app/Providers/NovaServiceProvider.php
+resources/views/vendor/
